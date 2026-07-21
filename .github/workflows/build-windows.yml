@@ -1,0 +1,90 @@
+name: Build Herfy Tracking System 2.18.0
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - source/**
+      - .github/workflows/build-windows.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: herfy-tracking-system-2-18-0
+  cancel-in-progress: false
+
+jobs:
+  build-windows:
+    name: Build Windows client and installer
+    runs-on: windows-latest
+    timeout-minutes: 90
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11 x64
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          architecture: x64
+
+      - name: Verify release source
+        shell: pwsh
+        run: |
+          $source = 'source/HerfyTrackingSystem_2.18.0_Client_Source.zip'
+          $expected = 'a797c52975530bb3e34b00ef54f000364402f6a5eddf24b3e086af4bfe0d9375'
+          if (-not (Test-Path -LiteralPath $source -PathType Leaf)) { throw "Missing $source" }
+          $actual = (Get-FileHash -LiteralPath $source -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($actual -ne $expected) { throw "Source checksum mismatch. expected=$expected actual=$actual" }
+          Write-Host "HERFY_SOURCE_ARCHIVE_OK sha256=$actual"
+
+      - name: Extract client source
+        shell: pwsh
+        run: |
+          Expand-Archive -LiteralPath 'source/HerfyTrackingSystem_2.18.0_Client_Source.zip' -DestinationPath client -Force
+          if (-not (Test-Path -LiteralPath 'client/tools/build/build.cmd' -PathType Leaf)) { throw 'Missing client build entry point' }
+          if (-not (Test-Path -LiteralPath 'client/installer/HerfyTrackingSystem.iss' -PathType Leaf)) { throw 'Missing installer definition' }
+
+      - name: Build EXE and setup
+        shell: cmd
+        working-directory: client
+        run: tools\build\build.cmd
+
+      - name: Collect and verify release files
+        shell: pwsh
+        working-directory: client
+        run: |
+          $release = Join-Path $PWD 'release'
+          New-Item -ItemType Directory -Path $release -Force | Out-Null
+          $setup = Join-Path $PWD 'publish/HerfyTrackingSystem_2.18.0_Setup.exe'
+          $manifest = Join-Path $PWD 'publish/client-update-manifest.json'
+          $runtime = Join-Path $env:LOCALAPPDATA 'HerfyTrackingSystem/Build/2.18.0/dist/HerfyTrackingSystem'
+          if (-not (Test-Path -LiteralPath $setup -PathType Leaf)) { throw "Missing installer: $setup" }
+          if (-not (Test-Path -LiteralPath $manifest -PathType Leaf)) { throw "Missing update manifest: $manifest" }
+          if (-not (Test-Path -LiteralPath (Join-Path $runtime 'HerfyTrackingSystem.exe') -PathType Leaf)) { throw "Missing application executable in $runtime" }
+          if (-not (Test-Path -LiteralPath (Join-Path $runtime 'HerfyTrackingSystemUpdateAgent.exe') -PathType Leaf)) { throw "Missing update agent executable in $runtime" }
+
+          Copy-Item -LiteralPath $setup -Destination (Join-Path $release 'HerfyTrackingSystem_2.18.0_Setup.exe') -Force
+          Copy-Item -LiteralPath $manifest -Destination (Join-Path $release 'client-update-manifest.json') -Force
+          Copy-Item -LiteralPath (Join-Path $runtime 'HerfyTrackingSystem.exe') -Destination (Join-Path $release 'HerfyTrackingSystem_2.18.0.exe') -Force
+          Compress-Archive -Path (Join-Path $runtime '*') -DestinationPath (Join-Path $release 'HerfyTrackingSystem_2.18.0_Portable.zip') -Force
+
+          $manifestData = Get-Content -LiteralPath $manifest -Raw -Encoding UTF8 | ConvertFrom-Json
+          $setupHash = (Get-FileHash -LiteralPath $setup -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($manifestData.version -ne '2.18.0') { throw "Unexpected manifest version: $($manifestData.version)" }
+          if ($manifestData.sha256 -ne $setupHash) { throw 'Installer checksum does not match client-update-manifest.json' }
+          Get-ChildItem -LiteralPath $release -File | Get-FileHash -Algorithm SHA256 | ForEach-Object {
+            "$($_.Hash.ToLowerInvariant())  $($_.Path | Split-Path -Leaf)"
+          } | Set-Content -LiteralPath (Join-Path $release 'SHA256SUMS.txt') -Encoding ascii
+          Get-ChildItem -LiteralPath $release -File | Format-Table Name, Length
+          Write-Host "HERFY_WINDOWS_RELEASE_OK setup_sha256=$setupHash"
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: HerfyTrackingSystem-2.18.0-Windows
+          path: client/release/*
+          if-no-files-found: error
+          retention-days: 30
