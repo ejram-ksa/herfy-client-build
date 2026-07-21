@@ -52,11 +52,27 @@ jobs:
           if (-not (Test-Path -LiteralPath 'client/installer/HerfyTrackingSystem.iss' -PathType Leaf)) { throw 'Missing installer definition' }
 
       - name: Build EXE and setup
-        shell: cmd
+        id: build
+        continue-on-error: true
+        shell: pwsh
         working-directory: client
-        run: tools\build\build.cmd
+        run: |
+          & cmd.exe /d /c tools\build\build.cmd *>&1 | Tee-Object -FilePath build.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Upload build diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: HerfyTrackingSystem-2.18.0-Diagnostics
+          path: |
+            client/build.log
+            client/publish/*
+          if-no-files-found: warn
+          retention-days: 30
 
       - name: Collect and verify release files
+        if: steps.build.outcome == 'success'
         shell: pwsh
         working-directory: client
         run: |
@@ -86,6 +102,7 @@ jobs:
           Write-Host "HERFY_WINDOWS_RELEASE_OK setup_sha256=$setupHash"
 
       - name: Upload release artifact
+        if: steps.build.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
           name: HerfyTrackingSystem-2.18.0-Windows
