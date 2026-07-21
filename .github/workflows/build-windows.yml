@@ -20,6 +20,15 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  windows-preflight:
+    name: Confirm Windows runner
+    runs-on: windows-latest
+    steps:
+      - shell: pwsh
+        run: |
+          $PSVersionTable.PSVersion
+          Write-Host "HERFY_WINDOWS_RUNNER_OK"
+
   build-windows:
     name: Build Windows client and installer
     runs-on: windows-latest
