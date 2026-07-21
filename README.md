@@ -1,17 +1,11 @@
-# Herfy Tracking System 2.18.0 Windows Build
+# Herfy Tracking System 2.18.0 Windows build
 
-This repository is prepared for GitHub Actions public free Windows build.
+This repository builds the approved Windows client from the exact source archive in `source/`.
 
-Source package SHA256:
+GitHub Actions validates the archive SHA-256, builds the PyInstaller runtime and the Inno Setup installer on a Windows x64 runner, then uploads:
 
-```
-836a90a4e16716b7106e6aaa323d2f88f70350f96228f980872fa23385100814
-```
-
-Source package size: 807873 bytes.
-
-Build outputs are uploaded as the GitHub Actions artifact named:
-
-```
-HerfyTrackingSystem-2.18.0-Windows
-```
+- `HerfyTrackingSystem_2.18.0_Setup.exe`
+- `HerfyTrackingSystem_2.18.0.exe`
+- `HerfyTrackingSystem_2.18.0_Portable.zip`
+- `client-update-manifest.json`
+- `SHA256SUMS.txt`
