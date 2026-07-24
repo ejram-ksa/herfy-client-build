@@ -12,7 +12,10 @@ SETUP = f"HerfyTrackingSystem_{VERSION}_Setup.exe"
 
 
 def write_json(path: Path, payload: dict) -> None:
-    path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    path.write_text(
+        json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
 
 
 def replace(path: Path, old: str, new: str, *, required: bool = False) -> None:
@@ -77,15 +80,24 @@ def patch_source(root: Path) -> None:
 
     replacements = {
         "data/tracking_baseline.py": [
-            ("Delete all legacy or canonical representations", "Delete all previous or canonical representations"),
+            (
+                "Delete all legacy or canonical representations",
+                "Delete all previous or canonical representations",
+            ),
         ],
         "data/usage_repository.py": [
             ("_legacy_usage_table_exists", "_previous_usage_table_exists"),
-            ("migrate_legacy_usage_operations", "migrate_previous_usage_operations"),
+            (
+                "migrate_legacy_usage_operations",
+                "migrate_previous_usage_operations",
+            ),
         ],
         "services/local_sync.py": [
             ("migrate_legacy", "migrate_previous"),
-            ("migrate_legacy_usage_operations", "migrate_previous_usage_operations"),
+            (
+                "migrate_legacy_usage_operations",
+                "migrate_previous_usage_operations",
+            ),
         ],
         "tools/verify/verify_architecture.py": [
             ("legacy import", "obsolete import"),
@@ -134,21 +146,53 @@ def patch_source(root: Path) -> None:
         path.write_text(text, encoding="utf-8")
 
     build = root / "tools" / "build" / "build.ps1"
-    replace(build, '(Join-Path $Publish "manifest.json")', '(Join-Path $Publish "client-update-manifest.json")', required=True)
+    replace(
+        build,
+        '(Join-Path $Publish "manifest.json")',
+        '(Join-Path $Publish "client-update-manifest.json")',
+        required=True,
+    )
 
     update_contract = root / "tools" / "verify" / "verify_update_install_contract.py"
-    replace(update_contract, '"manifest.json",', '"client-update-manifest.json",', required=True)
+    replace(
+        update_contract,
+        '"manifest.json",',
+        '"client-update-manifest.json",',
+        required=True,
+    )
 
 
 def source_files(root: Path) -> list[Path]:
-    blocked_dirs = {".git", ".venv", "build", "dist", "publish", "release", "__pycache__", ".pytest_cache", ".ruff_cache"}
-    blocked_suffixes = {".pyc", ".pyo", ".log", ".tmp", ".bak", ".old", ".orig"}
+    blocked_top_level = {
+        ".git",
+        ".venv",
+        "build",
+        "dist",
+        "publish",
+        "release",
+    }
+    blocked_anywhere = {
+        "__pycache__",
+        ".pytest_cache",
+        ".ruff_cache",
+    }
+    blocked_suffixes = {
+        ".pyc",
+        ".pyo",
+        ".log",
+        ".tmp",
+        ".bak",
+        ".old",
+        ".orig",
+    }
     files: list[Path] = []
     for path in root.rglob("*"):
         if not path.is_file():
             continue
         relative = path.relative_to(root)
-        if any(part in blocked_dirs for part in relative.parts):
+        if relative.parts and relative.parts[0] in blocked_top_level:
+            continue
+        if any(part in blocked_anywhere for part in relative.parts):
             continue
         if path.suffix.lower() in blocked_suffixes:
             continue
@@ -172,7 +216,11 @@ def regenerate_manifest(root: Path) -> list[Path]:
         )
     write_json(
         root / "MANIFEST.sha256.json",
-        {"app": "Herfy Tracking System", "version": VERSION, "files": entries},
+        {
+            "app": "Herfy Tracking System",
+            "version": VERSION,
+            "files": entries,
+        },
     )
     return files
 
@@ -180,7 +228,12 @@ def regenerate_manifest(root: Path) -> list[Path]:
 def create_source_zip(root: Path, output: Path, files: list[Path]) -> None:
     output.parent.mkdir(parents=True, exist_ok=True)
     ordered = [root / "MANIFEST.sha256.json", *files]
-    with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
+    with zipfile.ZipFile(
+        output,
+        "w",
+        compression=zipfile.ZIP_DEFLATED,
+        compresslevel=9,
+    ) as archive:
         for path in ordered:
             relative = path.relative_to(root).as_posix()
             info = zipfile.ZipInfo(relative, date_time=(2026, 7, 24, 0, 0, 0))
@@ -191,17 +244,33 @@ def create_source_zip(root: Path, output: Path, files: list[Path]) -> None:
         bad = archive.testzip()
         if bad:
             raise RuntimeError(f"Generated source ZIP is corrupt at {bad}")
+        names = set(archive.namelist())
+        required = {
+            "tools/build/build.cmd",
+            "tools/build/build.ps1",
+            "installer/HerfyTrackingSystem.iss",
+            "version.json",
+            "MANIFEST.sha256.json",
+        }
+        missing = sorted(required - names)
+        if missing:
+            raise RuntimeError(f"Generated source ZIP is incomplete: {missing}")
 
 
 def main() -> int:
     if len(sys.argv) != 3:
-        raise SystemExit("usage: prepare_release_2_18_1.py CLIENT_ROOT OUTPUT_ZIP")
+        raise SystemExit(
+            "usage: prepare_release_2_18_1.py CLIENT_ROOT OUTPUT_ZIP"
+        )
     root = Path(sys.argv[1]).resolve()
     output = Path(sys.argv[2]).resolve()
     patch_source(root)
     files = regenerate_manifest(root)
     create_source_zip(root, output, files)
-    print(f"HERFY_2_18_1_SOURCE_READY files={len(files) + 1} sha256={hashlib.sha256(output.read_bytes()).hexdigest()}")
+    digest = hashlib.sha256(output.read_bytes()).hexdigest()
+    print(
+        f"HERFY_2_18_1_SOURCE_READY files={len(files) + 1} sha256={digest}"
+    )
     return 0
 
 
