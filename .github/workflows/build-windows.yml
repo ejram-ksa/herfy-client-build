@@ -7,6 +7,12 @@ on:
       - source/**
       - .github/scripts/**
       - .github/workflows/build-windows.yml
+  pull_request:
+    branches: [main]
+    paths:
+      - source/**
+      - .github/scripts/**
+      - .github/workflows/build-windows.yml
   workflow_dispatch:
 
 permissions:
