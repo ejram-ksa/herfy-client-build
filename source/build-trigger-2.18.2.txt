@@ -1,0 +1,1 @@
+Trigger Windows release build for Herfy Tracking System 2.18.2.
