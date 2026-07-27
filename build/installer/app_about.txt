@@ -1,0 +1,12 @@
+Herfy Client — نبذة عن التطبيق
+
+Herfy Client is a Windows desktop application designed for branch operations, product tracking, expiry monitoring, usage import, and secure synchronization with the Herfy server.
+
+Key capabilities:
+• Product and branch tracking with clean operational screens.
+• Smart expiry status, colors, priorities, and notifications.
+• Usage import and local/offline-safe runtime data.
+• Secure remote synchronization and update readiness.
+• Central settings for language, notifications, monitoring, and startup behavior.
+
+تم تصميم Herfy Client لمساعدة الفروع على متابعة المنتجات، التنبيهات، الاستخدام، والمزامنة مع الخادم بشكل منظم وآمن، مع دعم العربية والإنجليزية وتجربة تشغيل مناسبة لبيئة Windows.

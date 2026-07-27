@@ -1,0 +1,87 @@
+name: Deployed release validation
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: Public website and static update origin
+        required: true
+        default: https://herfy.online
+        type: string
+      api_base_url:
+        description: Public API base URL
+        required: true
+        default: https://herfy.online/api
+        type: string
+      expected_version:
+        description: Expected version; leave empty to use version.json
+        required: false
+        default: ""
+        type: string
+      metadata_only:
+        description: Do not download and hash the installer
+        required: true
+        default: false
+        type: boolean
+      skip_api:
+        description: Skip API health and bootstrap probes
+        required: true
+        default: false
+        type: boolean
+      skip_homepage:
+        description: Skip homepage version and package checks
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  verify-deployed-release:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+
+      - name: Install Python 3.11
+        uses: actions/setup-python@v7
+        with:
+          python-version: 3.11.9
+          architecture: x64
+
+      - name: Verify public release
+        shell: bash
+        env:
+          INPUT_BASE_URL: ${{ inputs.base_url }}
+          INPUT_API_BASE_URL: ${{ inputs.api_base_url }}
+          INPUT_EXPECTED_VERSION: ${{ inputs.expected_version }}
+          INPUT_METADATA_ONLY: ${{ inputs.metadata_only }}
+          INPUT_SKIP_API: ${{ inputs.skip_api }}
+          INPUT_SKIP_HOMEPAGE: ${{ inputs.skip_homepage }}
+        run: |
+          set -euo pipefail
+          expected_version="$INPUT_EXPECTED_VERSION"
+          if [[ -z "$expected_version" ]]; then
+            expected_version="$(python -c 'import json; print(json.load(open("version.json", encoding="utf-8"))["app_version"])')"
+          fi
+          args=(
+            --base-url "$INPUT_BASE_URL"
+            --api-base-url "$INPUT_API_BASE_URL"
+            --expected-version "$expected_version"
+            --timeout 120
+            --output deployed-release-validation.json
+          )
+          if [[ "$INPUT_METADATA_ONLY" == "true" ]]; then args+=(--metadata-only); fi
+          if [[ "$INPUT_SKIP_API" == "true" ]]; then args+=(--skip-api); fi
+          if [[ "$INPUT_SKIP_HOMEPAGE" == "true" ]]; then args+=(--skip-homepage); fi
+          python build/release/verify_deployed_release.py "${args[@]}"
+
+      - name: Upload validation report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: HerfyClient-Deployed-Release-Validation
+          if-no-files-found: warn
+          path: deployed-release-validation.json
