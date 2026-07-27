@@ -1,0 +1,39 @@
+Herfy Client — Terms and Conditions / الشروط والأحكام
+
+1. Authorized Use
+This application is intended for authorized Herfy operational use only. The user must not share accounts, credentials, or access tokens with unauthorized persons.
+
+2. Data and Synchronization
+The application may store operational data locally and synchronize it with the configured Herfy server. The user is responsible for entering accurate branch, product, usage, and expiry information.
+
+3. Updates and Integrity
+Remote updates, when enabled, are intended to keep the client secure and compatible with the server. The user must not modify application files, replace runtime components, or bypass update validation.
+
+4. Security
+The installer and application do not request or embed server secrets. Any credential or permission is handled by the application and the server authorization model.
+
+5. Local Settings
+Installer-selected defaults such as language, notifications, monitoring, startup behavior, and update checks are initial preferences. Server-side permissions and policies remain authoritative.
+
+6. Responsibility
+Operational reports, alerts, and expiry notices are decision-support tools. Branch staff remain responsible for verifying physical stock, product status, and compliance with internal procedures.
+
+الشروط العربية:
+
+1. الاستخدام المصرّح
+هذا التطبيق مخصص للاستخدام التشغيلي المصرّح داخل Herfy فقط. يمنع مشاركة الحسابات أو بيانات الدخول أو صلاحيات الوصول مع أي شخص غير مخوّل.
+
+2. البيانات والمزامنة
+قد يحتفظ التطبيق ببيانات تشغيلية محليًا ويزامنها مع خادم Herfy المحدد. يتحمل المستخدم مسؤولية إدخال بيانات الفروع والمنتجات والاستخدام وتواريخ الانتهاء بشكل صحيح.
+
+3. التحديثات وسلامة الملفات
+تهدف التحديثات عن بعد، عند تفعيلها، إلى إبقاء العميل آمنًا ومتوافقًا مع الخادم. يمنع تعديل ملفات التطبيق أو استبدال مكونات التشغيل أو تجاوز آليات التحقق من التحديث.
+
+4. الأمان
+لا يقوم المثبّت أو التطبيق بتضمين أسرار الخادم. تتم إدارة بيانات الدخول والصلاحيات من خلال التطبيق ونموذج الصلاحيات المعتمد في الخادم.
+
+5. الإعدادات المحلية
+الإعدادات المختارة أثناء التثبيت مثل اللغة والتنبيهات والمراقبة والتشغيل مع Windows وفحص التحديثات هي تفضيلات أولية فقط. تبقى صلاحيات وسياسات الخادم هي المرجع النهائي.
+
+6. المسؤولية التشغيلية
+التقارير والتنبيهات وحالات الانتهاء أدوات مساعدة لاتخاذ القرار، ولا تغني عن التحقق الفعلي من المخزون وحالة المنتج والالتزام بالإجراءات الداخلية.

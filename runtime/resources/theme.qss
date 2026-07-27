@@ -1,0 +1,1262 @@
+/* Herfy Client unified visual system. */
+
+* { outline: 0; }
+QWidget {
+    background: #F6F8FC;
+    color: #0B1B36;
+    selection-background-color: #DDEBFF;
+    selection-color: #071A3A;
+}
+QLabel { background: transparent; color: #0B1B36; }
+QMainWindow#MainWindow, QWidget#AppRoot { background: #062B61; }
+QWidget#RightShell, QWidget#ContentHost, QWidget#ContentStack,
+QWidget#LoginShell, QWidget#LoginBody, QWidget#HomePage,
+QWidget#TrackingPage, QWidget#UsagePage, QWidget#AboutPage {
+    background: #F6F8FC;
+}
+
+QFrame#Sidebar {
+    border: none;
+    border-right: 1px solid rgba(255,255,255,0.12);
+    background: #062B61;
+    border-image: url(@ASSET_SIDEBAR_BG@) 0 0 0 0 stretch stretch;
+}
+QFrame#SidebarFooter {
+    background: transparent;
+    border-top: 1px solid rgba(255,255,255,0.24);
+}
+QLabel#SidebarLogo { background: transparent; min-height: 74px; }
+QLabel#SidebarBrandTitle {
+    color: #FFFFFF;
+    font-size: 18pt;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+QLabel#SidebarBrandSubtitle {
+    color: #E5F0FF;
+    font-size: 12pt;
+    font-weight: 800;
+    line-height: 128%;
+}
+QPushButton#SidebarButton {
+    background: transparent;
+    color: #EAF2FF;
+    border: none;
+    border-radius: 7px;
+    padding: 0 14px;
+    min-height: 44px;
+    text-align: left;
+    font-size: 11.5pt;
+    font-weight: 760;
+}
+QPushButton#SidebarButton:hover { background: rgba(255,255,255,0.11); }
+QPushButton#SidebarButton:checked { background: #1F6BFF; color: #FFFFFF; }
+QPushButton#SidebarButton[isExitButton="true"] { color: #EAF2FF; }
+
+QWidget#TopBar {
+    background: #FFFFFF;
+    border-bottom: 1px solid #DDE5F0;
+    min-height: 56px;
+    max-height: 56px;
+}
+QFrame#TopBarTitleBlock { background: transparent; border: none; }
+QLabel#TopBarTitle { color: #071A3A; font-size: 10pt; font-weight: 900; }
+QLabel#TopBarSubTitle { color: #64748B; font-size: 8pt; font-weight: 650; }
+QToolButton#TopMainMenuButton {
+    background: transparent;
+    color: #0B1B36;
+    border: none;
+    border-radius: 6px;
+    min-width: 58px;
+    min-height: 34px;
+    padding: 0 6px;
+    font-size: 11pt;
+    font-weight: 650;
+}
+QToolButton#TopMainMenuButton:hover { background: #F2F6FD; color: #0F5BFF; }
+QToolButton#TopMainMenuButton::menu-indicator { width: 0; image: none; }
+QFrame#CommandBar, QFrame#NotifWrap { background: transparent; border: none; }
+QToolButton#TopBarActionButton, QToolButton#NotificationsButton {
+    background: #FFFFFF;
+    color: #0B1B36;
+    border: none;
+    border-radius: 6px;
+    min-width: 34px;
+    min-height: 34px;
+    padding: 0 8px;
+    font-size: 10pt;
+    font-weight: 700;
+}
+QToolButton#TopBarActionButton:hover,
+QToolButton#NotificationsButton:hover { background: #F2F6FD; }
+QLabel#NotifBadge {
+    background: #EF233C;
+    color: #FFFFFF;
+    border-radius: 8px;
+    font-size: 7pt;
+    font-weight: 900;
+}
+QLabel#UserInfoLabel {
+    color: #0B1B36;
+    border-left: 1px solid #E1E7F0;
+    padding-left: 14px;
+    font-size: 10pt;
+    font-weight: 800;
+    min-width: 0;
+}
+
+QWidget#ShellStatusBar {
+    background: #FFFFFF;
+    border-top: 1px solid #DDE5F0;
+    min-height: 34px;
+    max-height: 36px;
+}
+QLabel#ShellStatusMessage { color: #536174; font-size: 10pt; font-weight: 650; }
+QLabel#NetIndicator {
+    color: #536174;
+    font-size: 10pt;
+    font-weight: 700;
+    padding: 0 4px;
+}
+QLabel#NetIndicator[net="online"] { color: #14B86A; }
+QLabel#NetIndicator[net="offline"] { color: #7C8797; }
+
+QFrame#PageHeader, QFrame#TransparentRow {
+    background: transparent;
+    border: none;
+}
+QLabel[uiRole="pageTitle"], QLabel#TrackingTitle, QLabel#UsageTitle,
+QLabel#DashboardTitle, QLabel#HomeHeroTitle {
+    color: #071A3A;
+    font-size: 25pt;
+    font-weight: 900;
+}
+QLabel[uiRole="pageSubTitle"], QLabel[uiRole="pageSubtitle"],
+QLabel#HomeHeroSubtitle, QLabel#MutedStatusLabel {
+    color: #536174;
+    font-size: 11pt;
+    font-weight: 500;
+}
+QFrame#GridPanel, QFrame#DashboardHeader, QFrame#TrackingToolbarCard,
+QFrame#UsageControlPanel, QFrame#Card, QFrame#TableCard,
+QFrame#HomeMetricCard, QFrame#HomeActionCard, QFrame#LoginIntroCard,
+QFrame#SettingsCard, QFrame#AdminMainSurface, QFrame#AdminLeftPane,
+QFrame#AdminRightPane, QFrame#AdminToolbarFrame, QFrame#AdminPermissionsPanel {
+    background: #FFFFFF;
+    border: 1px solid #DFE7F2;
+    border-radius: 8px;
+}
+QFrame#DashboardHeader {
+    min-height: 132px;
+    border-color: #DCE5F1;
+}
+QLabel#HomeLogo {
+    background: #EEF4FF;
+    border-radius: 36px;
+    padding: 10px;
+}
+QLabel#HomeWelcomeTitle {
+    color: #071A3A;
+    font-size: 20pt;
+    font-weight: 900;
+}
+QLabel#HomeChip {
+    background: #F0F5FF;
+    color: #0F4FAE;
+    border-radius: 6px;
+    padding: 8px 16px;
+    min-height: 26px;
+    font-size: 10pt;
+    font-weight: 800;
+}
+QFrame#MetricTile {
+    background: #FFFFFF;
+    border: 1px solid #DFE7F2;
+    border-radius: 8px;
+}
+QLabel#HomeStatIcon {
+    background: #EEF4FF;
+    border-radius: 8px;
+    padding: 7px;
+}
+QLabel#HomeStatValue {
+    color: #071A3A;
+    font-size: 23pt;
+    font-weight: 900;
+}
+QLabel#HomeStatLabel {
+    color: #14213D;
+    font-size: 10.5pt;
+    font-weight: 750;
+    line-height: 125%;
+}
+QFrame#HomeStatAccent {
+    background: #0F5BFF;
+    border: none;
+    border-radius: 1px;
+}
+QPushButton#HomeQuickActionButton {
+    background: #0F5BFF;
+    color: #FFFFFF;
+    border: 1px solid #0F5BFF;
+    border-radius: 7px;
+    padding: 0 18px;
+    min-height: 54px;
+    text-align: left;
+    font-size: 12pt;
+    font-weight: 850;
+}
+QPushButton#HomeQuickActionButton:hover {
+    background: #0B4FDB;
+    border-color: #0B4FDB;
+}
+QWidget#HomeBranchesWrap QLabel#HomeChip {
+    background: #FFFFFF;
+    color: #071A3A;
+    border: 1px solid #DDE5F0;
+    border-radius: 7px;
+    min-height: 34px;
+    padding: 8px 18px;
+    font-size: 11pt;
+}
+QWidget#HomeBranchesWrap QLabel#HomeChip[chipRole="active"] {
+    background: #EAF2FF;
+    border-color: #0F5BFF;
+    color: #0F4FAE;
+}
+QFrame#TrackingFieldGroup, QFrame#SettingsHeader, QFrame#SettingsFooter,
+QFrame#SettingsWorkspace { background: transparent; border: none; }
+QLabel#FlatFieldLabel, QLabel#SettingsCardTitle, QLabel#AdminSectionTitle,
+QLabel#HomeSectionTitle {
+    color: #14213D;
+    font-size: 11pt;
+    font-weight: 850;
+}
+QLabel#SectionTitle {
+    color: #14213D;
+    font-size: 13pt;
+    font-weight: 900;
+}
+QLabel#LoginInfoText, QLabel#LoginTipItem, QLabel#SettingsSubTitle,
+QLabel#SettingsPageText, QLabel#SettingsCardText, QLabel#AdminHelperText,
+QLabel#HomeSectionSubtitle {
+    color: #536174;
+    font-size: 10pt;
+    font-weight: 500;
+}
+QLabel#LoginSectionTitle { color: #071A3A; font-size: 11pt; font-weight: 900; }
+QLabel#LoginStatusLabel, QLabel#RemoteLoginNotice {
+    color: #536174;
+    font-size: 9.5pt;
+    font-weight: 600;
+}
+
+QLineEdit, QComboBox, QDateEdit, QSpinBox {
+    background: #FFFFFF;
+    color: #0B1B36;
+    border: 1px solid #D8E0EA;
+    border-radius: 7px;
+    padding: 4px 10px;
+    min-height: 40px;
+    font-size: 10.5pt;
+    font-weight: 600;
+}
+QLineEdit:focus, QComboBox:focus, QDateEdit:focus, QSpinBox:focus {
+    border: 1px solid #0F5BFF;
+    background: #FBFDFF;
+}
+QCheckBox { color: #0B1B36; font-size: 10pt; font-weight: 600; }
+QPushButton, QToolButton { font-weight: 800; }
+QPushButton#PrimaryButton, QPushButton#TrackingAddButton,
+QPushButton[buttonRole="primary"], QPushButton#AdminSaveButton {
+    background: #0F5BFF;
+    color: #FFFFFF;
+    border: 1px solid #0F5BFF;
+    border-radius: 7px;
+    padding: 6px 18px;
+    min-height: 40px;
+    font-size: 10.8pt;
+}
+QPushButton#PrimaryButton:hover, QPushButton#TrackingAddButton:hover,
+QPushButton[buttonRole="primary"]:hover, QPushButton#AdminSaveButton:hover {
+    background: #0B4FDB;
+}
+QPushButton#SecondaryButton, QPushButton[buttonRole="secondary"],
+QPushButton#AdminToolbarButton {
+    background: #FFFFFF;
+    color: #0B1B36;
+    border: 1px solid #D8E0EA;
+    border-radius: 7px;
+    padding: 6px 16px;
+    min-height: 36px;
+}
+
+QTableView, QTableWidget, QTreeWidget, QListWidget {
+    background: #FFFFFF;
+    alternate-background-color: #FAFCFF;
+    border: 1px solid #E1E7F0;
+    border-radius: 7px;
+    gridline-color: #E8EEF6;
+    selection-background-color: #DDEBFF;
+    selection-color: #071A3A;
+    font-size: 10.5pt;
+    color: #071A3A;
+}
+QTableView::item, QTableWidget::item {
+    padding: 0 12px;
+    min-height: 38px;
+}
+QTableView::item:selected, QTableWidget::item:selected {
+    background: #DDEBFF;
+    color: #071A3A;
+}
+QHeaderView::section {
+    background: #F4F7FB;
+    color: #0F4FAE;
+    border: none;
+    border-right: 1px solid #E1E7F0;
+    border-bottom: 1px solid #E1E7F0;
+    padding: 6px 10px;
+    min-height: 42px;
+    font-size: 10.5pt;
+    font-weight: 850;
+    qproperty-alignment: AlignCenter;
+}
+QFrame#TrackingToolbarCard {
+    background: transparent;
+    border: none;
+}
+QTableView#TrackingProductsTable {
+    border-radius: 7px;
+}
+QTableView#UsageTable QLineEdit {
+    qproperty-alignment: AlignCenter;
+    min-height: 28px;
+    max-height: 32px;
+}
+
+QDialog, QMessageBox, QDialog#SettingsDialog, QDialog#AdminDashboardDialog {
+    background: #F6F8FC;
+}
+QDialog[modernDialog="true"],
+QMessageBox {
+    background: #F6F8FC;
+    color: #0B1B36;
+}
+QDialog[modernDialog="true"] QFrame#TrackingControlCard,
+QDialog[modernDialog="true"] QFrame#UsageImportCard,
+QDialog[modernDialog="true"] QFrame#Card,
+QFrame#AdminDialogBody {
+    background: #FFFFFF;
+    border: 1px solid #DFE7F2;
+    border-radius: 8px;
+}
+QDialog[modernDialog="true"] QLabel,
+QMessageBox QLabel {
+    color: #0B1B36;
+    font-size: 10.5pt;
+    font-weight: 600;
+}
+QDialog[modernDialog="true"] QLabel#MutedStatusLabel,
+QDialog[modernDialog="true"] QLabel#StatusLabel {
+    color: #536174;
+    font-size: 10pt;
+    font-weight: 650;
+}
+QDialogButtonBox QPushButton,
+QMessageBox QPushButton {
+    background: #FFFFFF;
+    color: #0B1B36;
+    border: 1px solid #D8E0EA;
+    border-radius: 7px;
+    padding: 6px 18px;
+    min-width: 92px;
+    min-height: 36px;
+    font-size: 10.5pt;
+    font-weight: 800;
+}
+QDialogButtonBox QPushButton:hover,
+QMessageBox QPushButton:hover {
+    background: #F2F6FD;
+    border-color: #BCD0EA;
+}
+
+QDialog#UpdateActionDialog,
+QDialog#UpdateProgressDialog,
+QMessageBox#AppMessageBox {
+    background: #F6F8FC;
+    color: #0B1B36;
+    border: 1px solid #D8E0EA;
+    border-radius: 10px;
+}
+QDialog#UpdateActionDialog QLabel,
+QDialog#UpdateProgressDialog QLabel,
+QMessageBox#AppMessageBox QLabel {
+    color: #0B1B36;
+    background: transparent;
+}
+QDialog#UpdateProgressDialog QProgressBar {
+    background: #E6EDF7;
+    border: 1px solid #CBD8EA;
+    border-radius: 5px;
+    min-height: 10px;
+    max-height: 12px;
+}
+QDialog#UpdateProgressDialog QProgressBar::chunk {
+    background: #0F5BFF;
+    border-radius: 5px;
+}
+QLabel#UpdateDialogBadge, QLabel#UpdateProgressStage {
+    background: #EAF2FF;
+    color: #0F5BFF;
+    border-radius: 7px;
+    padding: 3px 8px;
+    font-size: 8.5pt;
+    font-weight: 850;
+}
+QLabel#UpdateDialogTitle, QLabel#UpdateProgressTitle {
+    color: #071A3A;
+    font-size: 12pt;
+    font-weight: 900;
+}
+QLabel#UpdateDialogMeta, QLabel#UpdateDialogNotes, QLabel#UpdateProgressFooter {
+    color: #536174;
+    font-size: 9.5pt;
+    font-weight: 600;
+}
+QLabel#UpdateDialogMandatory {
+    background: #FFF4E6;
+    color: #9A3412;
+    border: 1px solid #FED7AA;
+    border-radius: 7px;
+    padding: 6px 8px;
+    font-weight: 750;
+}
+QLabel#SettingsTitle, QLabel#NotificationDialogTitle {
+    color: #071A3A;
+    font-size: 18pt;
+    font-weight: 900;
+}
+QListWidget#SettingsNavigation {
+    background: #EEF4FC;
+    border: 1px solid #D8E0EA;
+    border-radius: 8px;
+    padding: 5px;
+}
+QListWidget#SettingsNavigation::item {
+    color: #14213D;
+    border-radius: 7px;
+    padding: 7px 10px;
+    margin: 2px;
+    min-height: 30px;
+    font-size: 10pt;
+    font-weight: 750;
+}
+QListWidget#SettingsNavigation::item:selected { background: #0F5BFF; color: #FFFFFF; }
+QToolButton#SettingsCloseButton {
+    background: #EEF4FC;
+    border: none;
+    border-radius: 7px;
+    min-width: 34px;
+    min-height: 34px;
+}
+QFrame#NotificationsPopup {
+    background: #FFFFFF;
+    border: 1px solid #D8E0EA;
+    border-radius: 8px;
+}
+QFrame#NotificationItem {
+    background: #FFFFFF;
+    border: 1px solid #E1E7F0;
+    border-radius: 8px;
+    padding: 7px;
+}
+QFrame#NotificationItem:hover { background: #F6F8FC; border-color: #C6D6EC; }
+QLabel#NotificationItemTitle { color: #071A3A; font-size: 10pt; font-weight: 850; }
+QLabel#NotificationItemMeta, QLabel#NotificationDialogSummary {
+    color: #64748B;
+    font-size: 9pt;
+    font-weight: 500;
+}
+QLabel#NotificationStatusPill {
+    background: #EAF2FF;
+    color: #0F5BFF;
+    border-radius: 7px;
+    padding: 3px 8px;
+    font-size: 8pt;
+    font-weight: 850;
+}
+QLabel#NotificationUnreadDot { color: #EF233C; font-size: 10pt; }
+QLabel#NotificationEmptyLabel { color: #64748B; font-size: 10pt; font-weight: 650; }
+QDialog#AdminChildDialog,
+QDialog#EditPermissionsDialog {
+    background: #F6F8FC;
+}
+QFrame#AdminDialogBody {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+QWidget#SettingsPage, QScrollArea#AdminPermissionsScroll, QScrollArea#AdminStructureScroll {
+    background: transparent;
+    border: none;
+}
+QScrollBar:vertical { background: #F1F5F9; width: 10px; margin: 0; }
+QScrollBar::handle:vertical { background: #BCD0EA; border-radius: 5px; min-height: 30px; }
+QScrollBar:horizontal { background: #F1F5F9; height: 10px; margin: 0; }
+QScrollBar::handle:horizontal { background: #BCD0EA; border-radius: 5px; min-width: 30px; }
+QScrollBar::add-line, QScrollBar::sub-line { width: 0; height: 0; }
+QFrame#SidebarFooter { margin-top: 2px; }
+QLabel#SidebarBrandTitle { font-size: 11.2pt; font-weight: 900; letter-spacing: .1px; }
+QLabel#SidebarBrandSubtitle { font-size: 7.2pt; font-weight: 730; line-height: 102%; }
+QPushButton#SidebarButton {
+    min-height: 24px; max-height: 26px; padding: 0 7px;
+    font-size: 7.7pt; font-weight: 720; border-radius: 4px; text-align: left;
+}
+QPushButton#SidebarButton[isExitButton="true"] { min-height: 24px; max-height: 26px; }
+QToolButton#TopMainMenuButton, QToolButton#TopMenuButton {
+    min-width: 30px; min-height: 21px; max-height: 23px; padding: 0 4px;
+    font-size: 7.6pt; font-weight: 700;
+}
+QToolButton#TopBarActionButton, QToolButton#NotificationsButton {
+    min-width: 24px; min-height: 21px; max-height: 23px; padding: 0 4px;
+    font-size: 7.5pt; font-weight: 700;
+}
+QLabel#NotifBadge { font-size: 5.5pt; border-radius: 6px; }
+QLabel#NetIndicator { padding: 1px 7px; border-radius: 7px; }
+QProgressBar#ShellTransitionProgress { min-height: 5px; max-height: 6px; border-radius: 3px; }
+QLabel[uiRole="pageTitle"], QLabel#TrackingTitle, QLabel#UsageTitle,
+QLabel#DashboardTitle, QLabel#HomeHeroTitle { font-size: 13.8pt; font-weight: 900; letter-spacing: -.2px; }
+QFrame#GridPanel, QFrame#DashboardHeader, QFrame#TrackingToolbarCard,
+QFrame#UsageControlPanel, QFrame#Card, QFrame#TableCard,
+QFrame#HomeMetricCard, QFrame#HomeActionCard, QFrame#LoginIntroCard,
+QFrame#SettingsCard { border-radius: 4px; }
+QFrame#DashboardHeader { min-height: 50px; max-height: 64px; }
+QLabel#HomeLogo { border-radius: 16px; padding: 3px; }
+QLabel#HomeWelcomeTitle { font-size: 12.0pt; font-weight: 900; }
+QLabel#HomeChip { padding: 1px 6px; min-height: 14px; font-size: 6.9pt; border-radius: 3px; }
+QLabel#HomeStatIcon { border-radius: 4px; padding: 2px; }
+QLabel#HomeStatLabel { font-size: 6.9pt; font-weight: 720; line-height: 100%; }
+QFrame#HomeStatAccent { max-height: 1px; min-height: 1px; }
+QWidget#HomeBranchesWrap QLabel#HomeChip {
+    min-height: 18px; padding: 2px 7px; font-size: 7.2pt; border-radius: 4px;
+}
+QLabel#FlatFieldLabel, QLabel#SettingsCardTitle, QLabel#AdminSectionTitle,
+QLabel#HomeSectionTitle { font-size: 7.7pt; font-weight: 790; }
+QLabel#SectionTitle { font-size: 8.9pt; font-weight: 880; }
+QLabel#LoginInfoText, QLabel#LoginTipItem, QLabel#SettingsSubTitle,
+QLabel#SettingsPageText, QLabel#SettingsCardText, QLabel#AdminHelperText,
+QLabel#HomeSectionSubtitle { font-size: 7.1pt; }
+QLabel#LoginSectionTitle { font-size: 8.2pt; }
+QLabel#LoginStatusLabel, QLabel#RemoteLoginNotice { font-size: 7.2pt; }
+QCheckBox { font-size: 7.5pt; }
+QPushButton#SecondaryButton, QPushButton[buttonRole="secondary"],
+QPushButton#AdminToolbarButton {
+    min-height: 21px; max-height: 24px; padding: 1px 7px;
+    font-size: 7.6pt; border-radius: 4px;
+}
+QTableView#UsageTable QLineEdit { min-height: 17px; max-height: 19px; font-size: 7.4pt; }
+QDialogButtonBox QPushButton, QMessageBox QPushButton {
+    min-height: 21px; max-height: 24px; min-width: 58px; font-size: 7.5pt;
+}
+QScrollBar:vertical { width: 7px; }
+QScrollBar:horizontal { height: 7px; }
+QWidget[heightConstrainedUi="true"] QLabel[uiRole="pageTitle"],
+QWidget[heightConstrainedUi="true"] QLabel#DashboardTitle { font-size: 13.2pt; }
+QWidget[heightConstrainedUi="true"] QFrame#DashboardHeader { min-height: 48px; max-height: 60px; }
+
+QWidget { font-size: 7.9pt; }
+QFrame#Sidebar { min-width: 152px; max-width: 152px; }
+QLabel#SidebarLogo { min-height: 30px; max-height: 34px; }
+QLabel#SidebarBrandTitle { font-size: 11.2pt; font-weight: 900; }
+QLabel#SidebarBrandSubtitle { font-size: 7.2pt; font-weight: 730; }
+QPushButton#SidebarButton { min-height: 24px; max-height: 26px; padding: 0 7px; font-size: 7.7pt; font-weight: 720; border-radius: 4px; }
+QWidget#TopBar { min-height: 31px; max-height: 34px; border-bottom: 1px solid #DDE5F0; }
+QToolButton#TopMainMenuButton, QToolButton#TopMenuButton, QToolButton#TopBarActionButton, QToolButton#NotificationsButton { min-height: 21px; max-height: 23px; padding: 0 4px; font-size: 7.6pt; font-weight: 700; }
+QFrame#UserScopeChip { min-height: 23px; max-height: 25px; padding: 0 5px; }
+QLabel#UserInfoLabel, QLabel#UserScopePrimary, QLabel#UserScopeSecondary { font-size: 7.3pt; font-weight: 720; padding-left: 5px; }
+QWidget#ShellStatusBar { min-height: 20px; max-height: 22px; }
+QLabel#ShellStatusMessage, QLabel#NetIndicator { font-size: 7.2pt; font-weight: 620; }
+QLabel[uiRole="pageTitle"], QLabel#TrackingTitle, QLabel#UsageTitle, QLabel#DashboardTitle, QLabel#HomeHeroTitle { font-size: 13.4pt; font-weight: 900; }
+QLabel[uiRole="pageSubTitle"], QLabel[uiRole="pageSubtitle"], QLabel#HomeHeroSubtitle, QLabel#MutedStatusLabel { font-size: 7.4pt; font-weight: 500; }
+QFrame#DashboardHeader { min-height: 48px; max-height: 60px; }
+QFrame#MetricTile { min-height: 48px; max-height: 58px; border-radius: 4px; }
+QLabel#HomeStatValue { font-size: 13.0pt; font-weight: 900; }
+QLabel#HomeStatLabel { font-size: 6.9pt; font-weight: 720; }
+QPushButton#HomeQuickActionButton { min-height: 24px; max-height: 27px; padding: 0 8px; font-size: 7.8pt; font-weight: 760; border-radius: 4px; }
+QLineEdit, QComboBox, QDateEdit, QSpinBox { min-height: 22px; max-height: 24px; padding: 0 5px; font-size: 7.7pt; border-radius: 4px; }
+QPushButton#PrimaryButton, QPushButton#TrackingAddButton, QPushButton[buttonRole="primary"], QPushButton#AdminSaveButton { min-height: 22px; max-height: 25px; padding: 1px 8px; font-size: 7.8pt; border-radius: 4px; }
+QPushButton#SecondaryButton, QPushButton[buttonRole="secondary"], QPushButton#AdminToolbarButton, QPushButton { min-height: 21px; max-height: 24px; padding: 1px 7px; font-size: 7.6pt; border-radius: 4px; }
+QFrame#TrackingToolbarCard { min-height: 44px; max-height: 54px; }
+QFrame#TrackingFieldGroup { min-height: 38px; max-height: 46px; }
+QTableView, QTableWidget, QTreeWidget, QListWidget { font-size: 7.7pt; border-radius: 4px; }
+QTableView::item, QTableWidget::item { padding: 0 5px; min-height: 17px; }
+QHeaderView::section { padding: 1px 5px; min-height: 20px; max-height: 23px; font-size: 7.7pt; font-weight: 800; }
+QProgressBar { background: #E7EDF5; border: 1px solid #CBD8EA; border-radius: 4px; }
+QProgressBar::chunk { background: #0F5BFF; border-radius: 4px; }
+QWidget#ContentHost { background: transparent; }
+QStackedWidget#ContentStack { background: transparent; }
+QWidget#SettingsPage { background: transparent; }
+QLabel#SettingsValidationLabel { font-size: 7.5pt; font-weight: 650; color: #6B7280; }
+
+QFrame#Card[settingsCard="true"] {
+    background: #FFFFFF;
+    border: 1px solid #DFE7F2;
+    border-radius: 8px;
+}
+QLineEdit[readOnlyInfo="true"] {
+    background: #F3F7FD;
+    color: #14213D;
+    border: 1px solid #D8E0EA;
+    font-weight: 750;
+}
+QDialog#EditTrackedProductDialog QFrame#TrackingControlCard,
+QDialog#ConfirmTrackedProductDeleteDialog QFrame#TrackingControlCard {
+    background: #FFFFFF;
+    border: 1px solid #DFE7F2;
+    border-radius: 8px;
+}
+QDialog#EditTrackedProductDialog QLabel,
+QDialog#ConfirmTrackedProductDeleteDialog QLabel {
+    color: #0B1B36;
+}
+
+
+/* Compact notification panel */
+QFrame#NotificationsPanel, QDialog#NotificationsDialog {
+    background: #ffffff;
+    border: 1px solid #dbe4f0;
+    border-radius: 12px;
+}
+QLabel#NotificationDialogSummaryCompact {
+    color: #3b5b86;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 0 2px 2px 2px;
+}
+QFrame#NotificationItem {
+    background: #ffffff;
+    border: 1px solid #dbe4f0;
+    border-radius: 10px;
+}
+QFrame#NotificationItem[read="false"] {
+    background: #f7fbff;
+    border-left: 3px solid #1d71f2;
+}
+QLabel#NotificationItemTitleCompact {
+    color: #102a56;
+    font-size: 12px;
+    font-weight: 700;
+}
+QLabel#NotificationItemProduct {
+    color: #20395f;
+    font-size: 12px;
+    font-weight: 600;
+}
+QLabel#NotificationItemMeta {
+    color: #47617f;
+    font-size: 11px;
+}
+QLabel#NotificationUnreadDot {
+    color: #dc2626;
+    font-size: 12px;
+}
+
+/* Compact notification popup without a large title frame */
+QFrame#NotificationsPopup {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+}
+QFrame#NotificationsPopup QListWidget#NotificationsList {
+    background: transparent;
+    border: none;
+}
+QFrame#NotificationsPopup QPushButton {
+    min-height: 28px;
+    padding: 4px 10px;
+}
+QLabel#NotificationDialogTitle {
+    font-size: 0px;
+    padding: 0px;
+    margin: 0px;
+}
+
+
+/* Top bar, notifications, and settings */
+QWidget#TopBar {
+    background: #FFFFFF;
+    border-bottom: 1px solid #E3EAF5;
+}
+QFrame#NotifWrap {
+    background: transparent;
+    border: none;
+    min-width: 42px;
+    max-width: 42px;
+}
+QToolButton#NotificationsButton {
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 4px;
+    min-width: 34px;
+    max-width: 34px;
+    min-height: 30px;
+    max-height: 30px;
+}
+QToolButton#NotificationsButton:hover {
+    background: #EEF4FF;
+    border-color: #D7E4F7;
+}
+QLabel#NotifBadge {
+    background: #E11D48;
+    color: #FFFFFF;
+    border: 1px solid #FFFFFF;
+    border-radius: 8px;
+    font-size: 7.5pt;
+    font-weight: 900;
+}
+QLabel#UserInfoLabel {
+    color: #0B1B36;
+    font-size: 8.2pt;
+    font-weight: 800;
+    padding: 0 8px;
+    border-left: 1px solid #E3EAF5;
+}
+QToolButton#SettingsCloseButton:hover {
+    background: #EAF2FF;
+    color: #0F5BFF;
+}
+QScrollArea#SettingsScrollArea {
+    background: transparent;
+    border: none;
+}
+QFrame#SettingsWorkspace {
+    background: transparent;
+    border: none;
+}
+QLabel#SettingsValidationLabel {
+    color: #B42318;
+    font-size: 8.5pt;
+    font-weight: 750;
+}
+QFrame#SettingsFooter {
+    background: transparent;
+    border: none;
+}
+QDialog#SettingsDialog QComboBox,
+QDialog#SettingsDialog QSpinBox {
+    min-height: 30px;
+    border-radius: 7px;
+}
+QDialog#SettingsDialog QCheckBox {
+    min-height: 24px;
+    spacing: 8px;
+}
+
+/* Compact notification panel: no horizontal scroll */
+QFrame#NotificationsPopup {
+    background: #FFFFFF;
+    border: 1px solid #DCE5F1;
+    border-radius: 10px;
+}
+QFrame#NotificationItem {
+    background: #FFFFFF;
+    border: 1px solid #E1E9F5;
+    border-radius: 8px;
+}
+QFrame#NotificationItem:hover {
+    border-color: #C4D4EA;
+    background: #F8FBFF;
+}
+QFrame#NotificationItem[severity="expired"],
+QFrame#NotificationItem[severity="today"] {
+    border-left: 3px solid #D92D20;
+}
+QFrame#NotificationItem[severity="critical"] {
+    border-left: 3px solid #F97316;
+}
+QFrame#NotificationItem[severity="soon"] {
+    border-left: 3px solid #F59E0B;
+}
+QLabel#NotificationEmptyLabel {
+    color: #64748B;
+    font-size: 9pt;
+    font-weight: 700;
+}
+
+
+/* Compact top bar, notification controls, and unified settings */
+QWidget#TopBar {
+    background: #FFFFFF;
+    border-bottom: 1px solid #DDE7F3;
+    min-height: 50px;
+    max-height: 50px;
+}
+QToolButton#NotificationsButton {
+    background: #F8FBFF;
+    color: #0B1B36;
+    border: 1px solid #DCE7F4;
+    border-radius: 18px;
+    min-width: 36px;
+    max-width: 36px;
+    min-height: 36px;
+    max-height: 36px;
+    padding: 0;
+}
+QToolButton#NotificationsButton:hover {
+    background: #EEF5FF;
+    border-color: #BFD4EF;
+}
+QFrame#NotifWrap {
+    background: transparent;
+    border: none;
+    min-width: 42px;
+    max-width: 46px;
+    min-height: 40px;
+}
+QLabel#NotifBadge {
+    background: #E11D48;
+    color: #FFFFFF;
+    border: 1px solid #FFFFFF;
+    border-radius: 8px;
+    min-width: 16px;
+    max-width: 22px;
+    min-height: 16px;
+    max-height: 16px;
+    padding: 0;
+    font-size: 7pt;
+    font-weight: 900;
+}
+QLabel#UserInfoLabel {
+    color: #0B1B36;
+    border-left: 1px solid #E1E7F0;
+    padding-left: 12px;
+    padding-right: 2px;
+    font-size: 9.5pt;
+    font-weight: 800;
+    min-width: 0;
+    max-width: 210px;
+}
+QFrame#CommandBar {
+    background: transparent;
+    border: none;
+}
+QFrame#NotificationsPopup {
+    background: #FFFFFF;
+    border: 1px solid #DCE7F4;
+    border-radius: 10px;
+}
+QListWidget#NotificationsList {
+    background: transparent;
+    border: none;
+    outline: none;
+}
+QListWidget#NotificationsList::item {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+QFrame#NotificationItem {
+    background: #FFFFFF;
+    border: 1px solid #E1E9F5;
+    border-radius: 8px;
+    padding: 0;
+}
+QFrame#NotificationItem:hover {
+    background: #F8FBFF;
+    border-color: #C4D4EA;
+}
+QFrame#NotificationItem[read="false"] {
+    background: #F3F8FF;
+    border-color: #CFE0F7;
+}
+QLabel#NotificationItemTitleCompact {
+    color: #071A3A;
+    font-size: 8.8pt;
+    font-weight: 900;
+}
+QLabel#NotificationItemProduct {
+    color: #0B1B36;
+    font-size: 8.4pt;
+    font-weight: 760;
+}
+QLabel#NotificationItemMeta {
+    color: #536174;
+    font-size: 7.8pt;
+    font-weight: 620;
+}
+QLabel#NotificationUnreadDot {
+    color: #0F5BFF;
+    font-size: 9pt;
+    font-weight: 900;
+}
+QDialog#SettingsDialog {
+    background: #F6F8FC;
+}
+QFrame#SettingsHeader {
+    background: #FFFFFF;
+    border: 1px solid #DFE7F2;
+    border-radius: 10px;
+}
+QLabel#SettingsHeaderIcon {
+    background: #EEF4FF;
+    color: #0F5BFF;
+    border-radius: 10px;
+    min-width: 42px;
+    max-width: 42px;
+    min-height: 42px;
+    max-height: 42px;
+    font-size: 18pt;
+    font-weight: 900;
+}
+QLabel#SettingsTitle {
+    color: #071A3A;
+    font-size: 16pt;
+    font-weight: 900;
+}
+QLabel#SettingsSubtitle {
+    color: #536174;
+    font-size: 9pt;
+    font-weight: 650;
+}
+QFrame#SettingsCard {
+    background: #FFFFFF;
+    border: 1px solid #DFE7F2;
+    border-radius: 10px;
+}
+QFrame#SettingsCard:hover {
+    border-color: #C9D7EA;
+}
+QLabel#SettingsCardTitle {
+    color: #0F4FAE;
+    font-size: 11pt;
+    font-weight: 900;
+}
+QScrollArea#SettingsScrollArea,
+QFrame#SettingsWorkspace,
+QFrame#SettingsFooter {
+    background: transparent;
+    border: none;
+}
+QToolButton#SettingsCloseButton {
+    background: #F2F6FD;
+    color: #0B1B36;
+    border: 1px solid #DFE7F2;
+    border-radius: 8px;
+    min-width: 32px;
+    min-height: 32px;
+    font-size: 11pt;
+    font-weight: 900;
+}
+
+
+/* Server-controlled administration workspace */
+QDialog#AdminDashboardDialog {
+    background: #F5F8FC;
+}
+QScrollArea#AdminBodyScroll,
+QWidget#AdminBodyViewport {
+    background: transparent;
+    border: none;
+}
+QFrame#AdminHeader {
+    background: #FFFFFF;
+    border: 1px solid #DDE7F3;
+    border-radius: 12px;
+}
+QLabel#AdminHeaderBadge {
+    background: #EEF4FF;
+    color: #0F5BFF;
+    border-radius: 12px;
+    min-width: 48px;
+    max-width: 48px;
+    min-height: 48px;
+    max-height: 48px;
+    font-size: 20pt;
+    font-weight: 900;
+}
+QLabel#AdminTitle {
+    color: #071A3A;
+    font-size: 17pt;
+    font-weight: 900;
+}
+QLabel#AdminSubtitle {
+    color: #536174;
+    font-size: 9.5pt;
+    font-weight: 650;
+}
+QLabel#AdminStatusPill {
+    background: #ECFDF3;
+    color: #067647;
+    border: 1px solid #ABEFC6;
+    border-radius: 12px;
+    padding: 5px 10px;
+    font-size: 8.2pt;
+    font-weight: 850;
+}
+QPushButton#AdminRefreshButton,
+QPushButton#AdminActionButton {
+    background: #0F5BFF;
+    color: #FFFFFF;
+    border: 1px solid #0F5BFF;
+    border-radius: 8px;
+    padding: 7px 12px;
+    font-weight: 850;
+}
+QPushButton#AdminRefreshButton:hover,
+QPushButton#AdminActionButton:hover {
+    background: #0B4DE0;
+    border-color: #0B4DE0;
+}
+QPushButton#AdminDangerButton {
+    background: #FEF3F2;
+    color: #B42318;
+    border: 1px solid #FECDCA;
+    border-radius: 8px;
+    padding: 7px 12px;
+    font-weight: 850;
+}
+QPushButton#AdminDangerButton:hover {
+    background: #FEE4E2;
+    border-color: #FDA29B;
+}
+QFrame#AdminNav {
+    background: #FFFFFF;
+    border: 1px solid #DDE7F3;
+    border-radius: 12px;
+    min-width: 178px;
+    max-width: 210px;
+}
+QPushButton#AdminNavButton {
+    background: transparent;
+    color: #24364F;
+    border: none;
+    border-radius: 9px;
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 9.5pt;
+    font-weight: 800;
+}
+QPushButton#AdminNavButton:hover {
+    background: #F2F7FF;
+    color: #0F5BFF;
+}
+QPushButton#AdminNavButton:checked {
+    background: #EAF2FF;
+    color: #0F5BFF;
+    border-left: 3px solid #0F5BFF;
+}
+QStackedWidget#AdminContentStack {
+    background: transparent;
+    border: none;
+}
+QFrame#AdminPanel,
+QFrame#AdminMetricCard {
+    background: #FFFFFF;
+    border: 1px solid #DDE7F3;
+    border-radius: 12px;
+}
+QLabel#AdminPanelTitle {
+    color: #0F4FAE;
+    font-size: 12pt;
+    font-weight: 900;
+}
+QLabel#AdminHintText,
+QLabel#AdminMetricHint {
+    color: #5F6D7E;
+    font-size: 8.5pt;
+    font-weight: 650;
+}
+QLabel#AdminMetricValue {
+    color: #071A3A;
+    font-size: 24pt;
+    font-weight: 900;
+}
+QLabel#AdminMetricTitle {
+    color: #0F4FAE;
+    font-size: 10pt;
+    font-weight: 900;
+}
+QTableWidget#AdminTable {
+    background: #FFFFFF;
+    alternate-background-color: #F8FBFF;
+    border: 1px solid #E1E9F5;
+    border-radius: 8px;
+    gridline-color: transparent;
+    selection-background-color: #EAF2FF;
+    selection-color: #071A3A;
+}
+QTableWidget#AdminTable::item {
+    padding: 7px 8px;
+}
+QHeaderView::section {
+    background: #F2F6FD;
+    color: #24364F;
+    border: none;
+    border-bottom: 1px solid #DDE7F3;
+    padding: 8px;
+    font-weight: 900;
+}
+QLineEdit#AdminSearchInput,
+QLineEdit#AdminInput,
+QComboBox#AdminFilterCombo {
+    background: #FFFFFF;
+    border: 1px solid #D4E0EF;
+    border-radius: 8px;
+    padding: 6px 9px;
+    min-height: 30px;
+}
+QLineEdit#AdminSearchInput:focus,
+QLineEdit#AdminInput:focus,
+QComboBox#AdminFilterCombo:focus {
+    border-color: #0F5BFF;
+}
+QFrame#AdminPermissionCard {
+    background: #F8FBFF;
+    border: 1px solid #E1E9F5;
+    border-radius: 9px;
+}
+QLabel#AdminPermissionText {
+    color: #24364F;
+    font-size: 8.5pt;
+    font-weight: 650;
+}
+QDialog#AdminFormDialog {
+    background: #F6F8FC;
+}
+QLabel#AdminFormTitle {
+    color: #071A3A;
+    font-size: 14pt;
+    font-weight: 900;
+}
+
+
+QLabel#AboutPlainIdea {
+    color: #334155;
+    font-size: 12px;
+    line-height: 1.35;
+}
+
+/* Update dialog and Windows reminder card */
+QDialog#UpdateProgressDialog {
+    background: transparent;
+}
+QFrame#UpdateDownloadCard {
+    background: #FFFFFF;
+    border: 1px solid #E3EAF5;
+    border-radius: 26px;
+}
+QWidget#UpdateDownloadLogoBadge {
+    background: transparent;
+}
+QLabel#UpdateDownloadTitle {
+    color: #07142A;
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+}
+QLabel#UpdateDownloadVersion {
+    color: #7B8493;
+    font-size: 19px;
+    font-weight: 500;
+}
+QLabel#UpdateDownloadPercent {
+    color: #050B16;
+    font-size: 17px;
+    font-weight: 850;
+    padding-right: 10px;
+}
+QProgressBar#UpdateDownloadProgressBar {
+    min-height: 29px;
+    max-height: 29px;
+    border: 2px solid #B9C4D2;
+    border-radius: 14px;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #F7FAFE, stop:1 #E8EDF5);
+    padding: 3px;
+}
+QProgressBar#UpdateDownloadProgressBar::chunk {
+    border-radius: 10px;
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #08245B, stop:0.55 #0D6DE8, stop:1 #17A7FF);
+}
+QLabel#UpdateDownloadDetail {
+    color: #687386;
+    font-size: 11px;
+    font-weight: 650;
+}
+QLabel#UpdateDownloadFooter {
+    color: #4A5568;
+    font-size: 15px;
+    font-weight: 500;
+}
+QWidget#ProductExpiryToastWindow {
+    background: transparent;
+}
+QFrame#ProductExpiryToastCard {
+    background: #FFFFFF;
+    border: 1px solid #C9D4E5;
+    border-radius: 20px;
+}
+QLabel#ProductExpiryToastLogo {
+    background: #FFFFFF;
+    border: 1px solid #E3EBF7;
+    border-radius: 43px;
+}
+QLabel#ProductExpiryToastTitle {
+    color: #030712;
+    font-size: 24px;
+    font-weight: 900;
+}
+QLabel#ProductExpiryToastMore {
+    color: #6B7280;
+    font-size: 22px;
+    font-weight: 900;
+    min-width: 34px;
+}
+QToolButton#ProductExpiryToastClose {
+    color: #6B7280;
+    background: transparent;
+    border: none;
+    font-size: 28px;
+    font-weight: 300;
+    min-width: 34px;
+    min-height: 34px;
+}
+QToolButton#ProductExpiryToastClose:hover {
+    color: #111827;
+    background: #EEF3FA;
+    border-radius: 17px;
+}
+QLabel#ProductExpiryToastDetails {
+    color: #111827;
+    font-size: 20px;
+    line-height: 1.25;
+}
+QLabel#ProductExpiryToastSummary {
+    color: #334155;
+    font-size: 16px;
+    font-weight: 650;
+}
+QFrame#ProductExpiryToastFooter {
+    border-top: 1px solid #E3E8F0;
+    background: transparent;
+}
+QLabel#ProductExpiryToastVersion {
+    color: #7B8493;
+    font-size: 15px;
+    font-weight: 500;
+}
+QPushButton#ProductExpiryToastDetailsButton {
+    color: #0F6DEB;
+    background: #FFFFFF;
+    border: 1px solid #C8D3E3;
+    border-radius: 12px;
+    padding: 10px 18px;
+    font-size: 15px;
+    font-weight: 850;
+}
+QPushButton#ProductExpiryToastDetailsButton:hover {
+    background: #EEF6FF;
+    border-color: #8EB8F2;
+}

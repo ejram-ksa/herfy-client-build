@@ -1,0 +1,117 @@
+name: Windows release validation
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_release:
+        description: Build EXE, update agent, installer, patch, and publish bundle
+        required: true
+        default: true
+        type: boolean
+      require_code_signing:
+        description: Fail unless all Windows executables are Authenticode signed and RFC 3161 timestamped
+        required: true
+        default: false
+        type: boolean
+      mandatory_update:
+        description: Mark a signed production build as mandatory when assembled
+        required: true
+        default: false
+        type: boolean
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: windows-2022
+    timeout-minutes: 45
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+
+      - name: Install Python 3.11 x64
+        uses: actions/setup-python@v7
+        with:
+          python-version: 3.11.9
+          architecture: x64
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            requirements-build.txt
+            requirements-test.txt
+            requirements-quality.txt
+
+      - name: Install validation dependencies
+        shell: pwsh
+        run: |
+          python -m pip install --upgrade pip==25.3
+          python -m pip install --prefer-binary --only-binary=:all: `
+            -r requirements-build.txt `
+            -r requirements-test.txt `
+            -r requirements-quality.txt
+          python -m pip check
+
+      - name: Validate source and Windows Qt runtime
+        shell: cmd
+        run: 00_VALIDATE.cmd
+
+  build-release:
+    needs: validate
+    if: github.event_name == 'workflow_dispatch' && inputs.build_release
+    runs-on: windows-2022
+    timeout-minutes: 120
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+
+      - name: Install Python 3.11 x64
+        uses: actions/setup-python@v7
+        with:
+          python-version: 3.11.9
+          architecture: x64
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            requirements-build.txt
+            requirements-test.txt
+            requirements-quality.txt
+
+      - name: Read release metadata
+        id: release_metadata
+        shell: pwsh
+        run: |
+          $version = (Get-Content -Raw -Encoding UTF8 version.json | ConvertFrom-Json).app_version
+          "app_version=$version" >> $env:GITHUB_OUTPUT
+
+      - name: Build complete Windows release
+        shell: cmd
+        env:
+          HERFY_REQUIRE_CODE_SIGNING: ${{ inputs.require_code_signing && '1' || '0' }}
+          HERFY_SIGNING_CERT_THUMBPRINT: ${{ secrets.HERFY_SIGNING_CERT_THUMBPRINT }}
+          HERFY_SIGNING_PFX_BASE64: ${{ secrets.HERFY_SIGNING_PFX_BASE64 }}
+          HERFY_SIGNING_PFX_PASSWORD: ${{ secrets.HERFY_SIGNING_PFX_PASSWORD }}
+          HERFY_TIMESTAMP_URL: ${{ vars.HERFY_TIMESTAMP_URL }}
+          HERFY_MANDATORY_UPDATE: ${{ inputs.mandatory_update && '1' || '0' }}
+        run: 00_BUILD_AND_PUBLISH.cmd
+
+      - name: Upload installer and runtime patch
+        uses: actions/upload-artifact@v7
+        with:
+          name: HerfyClient-Windows-${{ steps.release_metadata.outputs.app_version }}
+          if-no-files-found: error
+          path: |
+            build/installer/output/*.exe
+            build/installer/output/*.zip
+            build/installer/output/*.sha256
+            build/installer/output/signing-status.json
+
+      - name: Upload publish bundle
+        uses: actions/upload-artifact@v7
+        with:
+          name: HerfyClient-Publish-${{ steps.release_metadata.outputs.app_version }}
+          if-no-files-found: error
+          path: publish/**
