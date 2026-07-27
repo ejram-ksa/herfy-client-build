@@ -217,99 +217,99 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'SCP upload failed' }
           $mandatory = if ($env:HERFY_MANDATORY_UPDATE -eq 'true') { 'true' } else { 'false' }
           $remoteScript = @'
-set -euo pipefail
-stage="$1"
-root="$2"
-base_url="$3"
-mandatory="$4"
-version="2.18.2"
-installer="HerfyTrackingSystem_2.18.2_Setup.exe"
-version_dir="$root/$version"
-packages_dir="$root/packages"
-mkdir -p "$version_dir" "$packages_dir"
-test -f "$stage/$installer"
-test -f "$stage/client-update-manifest.json"
-test -f "$stage/SHA256SUMS.txt"
-sha="$(sha256sum "$stage/$installer" | awk '{print $1}')"
-size="$(stat -c %s "$stage/$installer")"
-manifest_sha="$(python3 - "$stage/client-update-manifest.json" <<'PY'
-import json,sys
-print(json.load(open(sys.argv[1],encoding='utf-8'))['sha256'])
-PY
-)"
-manifest_size="$(python3 - "$stage/client-update-manifest.json" <<'PY'
-import json,sys
-print(json.load(open(sys.argv[1],encoding='utf-8'))['size'])
-PY
-)"
-test "$sha" = "$manifest_sha"
-test "$size" = "$manifest_size"
-install -o root -g www-data -m 0640 "$stage/$installer" "$version_dir/$installer"
-install -o root -g www-data -m 0640 "$stage/$installer" "$packages_dir/$installer"
-for file in client-update-manifest.json SHA256SUMS.txt HerfyTrackingSystem_2.18.2_Portable.zip HerfyTrackingSystem_2.18.2_Client_Source.zip HerfyTrackingSystem_2.18.2.exe; do
-  if [ -f "$stage/$file" ]; then install -o root -g www-data -m 0640 "$stage/$file" "$version_dir/$file"; fi
-done
-python3 - "$root" "$version" "$installer" "$sha" "$size" "$base_url" "$mandatory" <<'PY'
-import json, os, sys, tempfile
-root, version, installer, sha256, size, base_url, mandatory = sys.argv[1:]
-mandatory_bool = mandatory.lower() == 'true'
-url = f"{base_url}/{version}/{installer}"
-payloads = {
-  'latest.json': {
-    'version': version,
-    'installer': installer,
-    'url': url,
-    'sha256': sha256,
-    'size': int(size),
-    'mandatory': mandatory_bool,
-  },
-  'manifest.json': {
-    'version': version,
-    'installer': installer,
-    'url': url,
-    'sha256': sha256,
-    'size': int(size),
-    'mandatory': mandatory_bool,
-  },
-  'integrity.json': {
-    'version': version,
-    'files': {installer: {'sha256': sha256, 'size': int(size)}},
-  },
-  'upgrade-plan.json': {
-    'version': version,
-    'mandatory': mandatory_bool,
-    'installer': installer,
-    'url': url,
-  },
-}
-for name, payload in payloads.items():
-    fd, tmp = tempfile.mkstemp(prefix=f'.{name}.', dir=root)
-    try:
-        with os.fdopen(fd, 'w', encoding='utf-8') as handle:
-            json.dump(payload, handle, ensure_ascii=False, indent=2)
-            handle.write('\n')
-            handle.flush()
-            os.fsync(handle.fileno())
-        os.chmod(tmp, 0o640)
-        os.replace(tmp, os.path.join(root, name))
-    finally:
-        if os.path.exists(tmp): os.unlink(tmp)
-PY
-chown root:www-data "$root/latest.json" "$root/manifest.json" "$root/integrity.json" "$root/upgrade-plan.json"
-chmod 0640 "$root/latest.json" "$root/manifest.json" "$root/integrity.json" "$root/upgrade-plan.json"
-nginx -t
-systemctl reload nginx
-curl --fail --silent --show-error "$base_url/latest.json" >/tmp/herfy-latest.json
-python3 - /tmp/herfy-latest.json "$version" "$sha" <<'PY'
-import json,sys
-payload=json.load(open(sys.argv[1],encoding='utf-8'))
-assert payload['version']==sys.argv[2], payload
-assert payload['sha256']==sys.argv[3], payload
-PY
-curl --fail --silent --show-error --range 0-1023 "$base_url/$version/$installer" >/dev/null
-rm -rf "$stage" /tmp/herfy-latest.json
-printf 'HERFY_SERVER_DEPLOYMENT_OK version=%s sha256=%s\n' "$version" "$sha"
-'@
+          set -euo pipefail
+          stage="$1"
+          root="$2"
+          base_url="$3"
+          mandatory="$4"
+          version="2.18.2"
+          installer="HerfyTrackingSystem_2.18.2_Setup.exe"
+          version_dir="$root/$version"
+          packages_dir="$root/packages"
+          mkdir -p "$version_dir" "$packages_dir"
+          test -f "$stage/$installer"
+          test -f "$stage/client-update-manifest.json"
+          test -f "$stage/SHA256SUMS.txt"
+          sha="$(sha256sum "$stage/$installer" | awk '{print $1}')"
+          size="$(stat -c %s "$stage/$installer")"
+          manifest_sha="$(python3 - "$stage/client-update-manifest.json" <<'PY'
+          import json,sys
+          print(json.load(open(sys.argv[1],encoding='utf-8'))['sha256'])
+          PY
+          )"
+          manifest_size="$(python3 - "$stage/client-update-manifest.json" <<'PY'
+          import json,sys
+          print(json.load(open(sys.argv[1],encoding='utf-8'))['size'])
+          PY
+          )"
+          test "$sha" = "$manifest_sha"
+          test "$size" = "$manifest_size"
+          install -o root -g www-data -m 0640 "$stage/$installer" "$version_dir/$installer"
+          install -o root -g www-data -m 0640 "$stage/$installer" "$packages_dir/$installer"
+          for file in client-update-manifest.json SHA256SUMS.txt HerfyTrackingSystem_2.18.2_Portable.zip HerfyTrackingSystem_2.18.2_Client_Source.zip HerfyTrackingSystem_2.18.2.exe; do
+            if [ -f "$stage/$file" ]; then install -o root -g www-data -m 0640 "$stage/$file" "$version_dir/$file"; fi
+          done
+          python3 - "$root" "$version" "$installer" "$sha" "$size" "$base_url" "$mandatory" <<'PY'
+          import json, os, sys, tempfile
+          root, version, installer, sha256, size, base_url, mandatory = sys.argv[1:]
+          mandatory_bool = mandatory.lower() == 'true'
+          url = f"{base_url}/{version}/{installer}"
+          payloads = {
+            'latest.json': {
+              'version': version,
+              'installer': installer,
+              'url': url,
+              'sha256': sha256,
+              'size': int(size),
+              'mandatory': mandatory_bool,
+            },
+            'manifest.json': {
+              'version': version,
+              'installer': installer,
+              'url': url,
+              'sha256': sha256,
+              'size': int(size),
+              'mandatory': mandatory_bool,
+            },
+            'integrity.json': {
+              'version': version,
+              'files': {installer: {'sha256': sha256, 'size': int(size)}},
+            },
+            'upgrade-plan.json': {
+              'version': version,
+              'mandatory': mandatory_bool,
+              'installer': installer,
+              'url': url,
+            },
+          }
+          for name, payload in payloads.items():
+              fd, tmp = tempfile.mkstemp(prefix=f'.{name}.', dir=root)
+              try:
+                  with os.fdopen(fd, 'w', encoding='utf-8') as handle:
+                      json.dump(payload, handle, ensure_ascii=False, indent=2)
+                      handle.write('\n')
+                      handle.flush()
+                      os.fsync(handle.fileno())
+                  os.chmod(tmp, 0o640)
+                  os.replace(tmp, os.path.join(root, name))
+              finally:
+                  if os.path.exists(tmp): os.unlink(tmp)
+          PY
+          chown root:www-data "$root/latest.json" "$root/manifest.json" "$root/integrity.json" "$root/upgrade-plan.json"
+          chmod 0640 "$root/latest.json" "$root/manifest.json" "$root/integrity.json" "$root/upgrade-plan.json"
+          nginx -t
+          systemctl reload nginx
+          curl --fail --silent --show-error "$base_url/latest.json" >/tmp/herfy-latest.json
+          python3 - /tmp/herfy-latest.json "$version" "$sha" <<'PY'
+          import json,sys
+          payload=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert payload['version']==sys.argv[2], payload
+          assert payload['sha256']==sys.argv[3], payload
+          PY
+          curl --fail --silent --show-error --range 0-1023 "$base_url/$version/$installer" >/dev/null
+          rm -rf "$stage" /tmp/herfy-latest.json
+          printf 'HERFY_SERVER_DEPLOYMENT_OK version=%s sha256=%s\n' "$version" "$sha"
+          '@
           $scriptPath = Join-Path $env:RUNNER_TEMP 'deploy-herfy-release.sh'
           $remoteScript.Replace("`r`n", "`n") | Set-Content -LiteralPath $scriptPath -NoNewline -Encoding utf8
           scp -i $env:HERFY_SSH_KEY -P $env:HERFY_SSH_PORT $scriptPath "${target}:$remoteStage/deploy.sh"
